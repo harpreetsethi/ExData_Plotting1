@@ -32,4 +32,4 @@ png(filename=paste(cwd,"/plot1.png", sep = ""), width = 480, height = 480, units
 hist(var_dataTbl$Global_active_power, main = "Global Active Power", 
      xlab = "Global Active Power (kilowatts)", ylab = "Frequency", col = "red",
      breaks=12)
-dev.off()
+invisible(dev.off())

@@ -50,4 +50,4 @@ axis(2, at=c(0,5,10,15,20,25,30,35))
 box()
 legend("topright", pch="-", col=c("black", "red", "blue"), 
        legend=c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"))
-dev.off()
+invisible(dev.off())

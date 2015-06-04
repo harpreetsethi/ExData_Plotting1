@@ -81,4 +81,4 @@ axis(1, head(which(grepl("Sun", var_dataTbl$dayofweek)),1), c("Sun"))
 axis(2, at=pretty(var_dataTbl$Global_reactive_power))
 box()
 
-dev.off()
+invisible(dev.off())
