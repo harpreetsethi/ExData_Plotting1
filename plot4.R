@@ -69,7 +69,7 @@ axis(2, at=pretty(var_dataTbl$Global_active_power), cex.axis=0.9)
 box()
 
 #################Second Graph
-#1. Plot the graph without any data points
+#1. Plot the graph without any data points (scaled down size of y and x axis labels)
 plot((1:nrow(var_dataTbl)), var_dataTbl$Voltage, pch=NA_integer_,axes = FALSE,
      ylab="", xlab="")
 mtext("datetime", side=1, line=3, cex=0.9)
@@ -98,7 +98,7 @@ box()
 minY<-min(var_dataTbl$Sub_metering_1, var_dataTbl$Sub_metering_2, var_dataTbl$Sub_metering_3)
 maxY<-max(var_dataTbl$Sub_metering_1, var_dataTbl$Sub_metering_2, var_dataTbl$Sub_metering_3)
 
-#2. Plot the graph without any data points
+#2. Plot the graph without any data points (scaled down size of y axis label)
 plot((1:nrow(var_dataTbl)), var_dataTbl$Sub_metering_1, xlim=c(1,nrow(var_dataTbl)),
      ylim=c(minY,maxY), pch=NA_integer_,axes = FALSE,ylab="", xlab="")
 mtext("Energy sub metering", side=2, line=3, cex=0.9)
@@ -134,7 +134,7 @@ legend("topright", pch=c(NA), col=c("black", "red", "blue"), lty=c(1), bty="n", 
 
 
 #################Fourth Graph
-#1. Plot the graph without any data points
+#1. Plot the graph without any data points (scaled down size of y and x axis labels)
 plot((1:nrow(var_dataTbl)), var_dataTbl$Global_reactive_power, pch=NA_integer_,axes = FALSE,ylab="", xlab="")
 mtext("datetime", side=1, line=3, cex=0.9)
 mtext("Global_reactive_power", side=2, line=3, cex=0.9)
