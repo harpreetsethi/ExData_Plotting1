@@ -45,19 +45,38 @@ png(filename=paste(cwd,"/plot3.png", sep = ""), width = 480, height = 480, units
 minY<-min(var_dataTbl$Sub_metering_1, var_dataTbl$Sub_metering_2, var_dataTbl$Sub_metering_3)
 maxY<-max(var_dataTbl$Sub_metering_1, var_dataTbl$Sub_metering_2, var_dataTbl$Sub_metering_3)
 
-#Plot the labels and overall grid without plotting the points
+#Plot the labels and overall grid without plotting the points, use the min, max values computed above
+#in order to ensure that the plotting area is scalable enough to plot all data without cutting off any lines
 plot((1:nrow(var_dataTbl)), var_dataTbl$Sub_metering_1, xlim=c(1,nrow(var_dataTbl)),
-  ylim=c(minY,maxY+10), pch=NA_integer_,axes = FALSE,ylab="Energy Sub metering", xlab="")
+  ylim=c(minY,maxY), pch=NA_integer_,axes = FALSE,ylab="Energy sub metering", xlab="")
 
 #Plot the 3 lines (using the same color coding as that of the sample course figure)
 lines(x=(1:nrow(var_dataTbl)), y=var_dataTbl$Sub_metering_1)
 lines(x=(1:nrow(var_dataTbl)), y=var_dataTbl$Sub_metering_2, col="red")
 lines(x=(1:nrow(var_dataTbl)), y=var_dataTbl$Sub_metering_3, col="blue")
 
-axis(1, 1, c("Thurs"))
+#plot the label for Thursday on the X axis for the data that correspsonds to Thursday 
+#(which is the first 1440 data points)
+axis(1, 1, c("Thu"))
+
+#plot the label for Friday on the X axis for the data that correspsonds to Friday
+#this is done via searching for friday in the day of the week column that was added above
+#and the label is added to the first tick corresponding to the Friday data
 axis(1, head(which(grepl("Fri", var_dataTbl$dayofweek)),1), c("Fri"))
-axis(2, at=pretty(c(var_dataTbl$Sub_metering_1, var_dataTbl$Sub_metering_2, var_dataTbl$Sub_metering_3)))
+
+#We finish the labelling by adding saturday to the next tick after the friday data
+var_loc<-tail(which(grepl("Fri", var_dataTbl$dayofweek)),1)+1
+axis(1, var_loc, c("Sat"))
+
+#Plot the y axis by using the specs provided in the course submission sample image
+axis(2, at=c(0,10,20,30))
+
+#Plot the box around axis
 box()
-legend("topright", pch="-", col=c("black", "red", "blue"), 
+
+#Plot the legend at the top right corner, using the color specs as provided in the course submission sample image
+legend("topright", pch=c(NA), col=c("black", "red", "blue"), lty=c(1),
        legend=c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"))
+
+#Quietly close the device
 invisible(dev.off())
