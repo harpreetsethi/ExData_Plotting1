@@ -32,9 +32,11 @@ var_dataTbl<-tbl_df(read.csv.sql(paste(cwd,"/household_power_consumption.txt", s
 png(filename=paste(cwd,"/plot1.png", sep = ""), width = 480, height = 480, units = "px", bg = "white")
 
 #Plot the histogram, use pretty function to figure out the best breakdown of the histogram cells
+#Multiplying the length of the pretty vector by 4 provides us with similar number of cells as that of the
+#sample course submission figure
 hist(var_dataTbl$Global_active_power, main = "Global Active Power", 
      xlab = "Global Active Power (kilowatts)", ylab = "Frequency", col = "red",
-     breaks=length(pretty(var_dataTbl$Global_active_power)))
+     breaks=length(pretty(var_dataTbl$Global_active_power))*4)
 
 #Quietly close the device
 invisible(dev.off())
