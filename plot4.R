@@ -160,4 +160,5 @@ axis(2, at=pretty(var_dataTbl$Global_reactive_power), cex.axis=0.9)
 #6. Draw the box
 box()
 
+#Quietly close the device
 invisible(dev.off())
