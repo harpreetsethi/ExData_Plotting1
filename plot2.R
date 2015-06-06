@@ -36,7 +36,7 @@ var_dataTbl<-tbl_df(read.csv.sql(paste(cwd,"/household_power_consumption.txt", s
                                  sep=";", header=TRUE))
 #Add column for day of the week
 var_dataTbl<-tbl_df(mutate(var_dataTbl, dayofweek=wday(dmy(var_dataTbl$Date), label=TRUE, abbr=TRUE)))
-nrow(var_dataTbl)
+
 #Open Device (specs are based on the requirements in the course submission)
 png(filename=paste(cwd,"/plot2.png", sep = ""), width = 480, height = 480, units = "px", bg = "white")
 
@@ -47,14 +47,19 @@ plot((1:nrow(var_dataTbl)), var_dataTbl$Global_active_power, pch=NA_integer_,axe
 #Plot the line for global active power
 lines(x=(1:nrow(var_dataTbl)), y=var_dataTbl$Global_active_power)
 
-#plot the label for Thursday on the X axis for the data that correspsonds to Saturday 
+#plot the label for Thursday on the X axis for the data that correspsonds to Thursday 
 #(which is the first 1440 data points)
-axis(1, 1, c("Thurs"))
+axis(1, 1, c("Thu"))
 
-#plot the label for Sunday on the X axis for the data that correspsonds to Sunday
-#this is done via searching for sunday in the day of the week column that was added above
-#and the label is added to the first tick corresponding to the sunday data
-axis(1, head(which(grepl("Fri", var_dataTbl$dayofweek)),1), c("Fri"))
+#plot the label for Friday on the X axis for the data that correspsonds to Friday
+#this is done via searching for friday in the day of the week column that was added above
+#and the label is added to the first tick corresponding to the Friday data
+var_loc<-head(which(grepl("Fri", var_dataTbl$dayofweek)),1)
+axis(1, var_loc, c("Fri"))
+
+#We finish the labelling by adding saturday to the next tick after the friday data
+var_loc<-tail(which(grepl("Fri", var_dataTbl$dayofweek)),1)+1
+axis(1, var_loc, c("Sat"))
 
 #Draw the Y axis with intervals defined by the pretty function
 axis(2, at=pretty(var_dataTbl$Global_active_power))
