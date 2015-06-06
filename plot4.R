@@ -41,77 +41,123 @@ var_dataTbl<-tbl_df(mutate(var_dataTbl, dayofweek=wday(dmy(var_dataTbl$Date), la
 png(filename=paste(cwd,"/plot4.png", sep = ""), width = 480, height = 480, units = "px", bg = "white")
 
 #Setting the plot matrix (as we are drawing 4 graphs)
-#As we are using mfrow, the graphs get plotted row wise and then wrap to the new row
+#As we are using mfrow, the graphs will get plotted row wise
 par(mfrow=c(2,2))
 
-#First graph
-#1. Plot the graph without any data points
-#2. Plot the line
-#3. Plot the label for the first 1440 values
-#4. Plot the label for the second 1440 values, use the grep command to find the exact location
-#5. Define the ticks by using the pretty function
-#6. Draw the box
+#################First graph
+#1. Plot the graph without any data points (scaled down size of y axis label)
 plot((1:nrow(var_dataTbl)), var_dataTbl$Global_active_power, pch=NA_integer_,axes = FALSE,
-     ylab="Global Active Power (kilowatts)", xlab="")
-lines(x=(1:nrow(var_dataTbl)), y=var_dataTbl$Global_active_power)
-axis(1, 1, c("Thurs"))
-axis(1, head(which(grepl("Fri", var_dataTbl$dayofweek)),1), c("Fri"))
-axis(2, at=pretty(var_dataTbl$Global_active_power))
-box()
+     ylab="", xlab="")
+mtext("Global Active Power", side=2, line=3, cex=0.9)
 
-#Second Graph
-#1. Plot the graph without any data points
 #2. Plot the line
+lines(x=(1:nrow(var_dataTbl)), y=var_dataTbl$Global_active_power)
+
 #3. Plot the label for the first 1440 values
-#4. Plot the label for the second 1440 values, use the grep command to find the exact location
+axis(1, 1, c("Thu"), cex.axis=0.9)
+
+#4. Plot the label for the second 1440 values, use the grep command to find the exact location, finish off by adding the label for saturday
+var_loc<-head(which(grepl("Fri", var_dataTbl$dayofweek)),1)
+axis(1, var_loc, c("Fri"), cex.axis=0.9)
+var_loc<-tail(which(grepl("Fri", var_dataTbl$dayofweek)),1)+1
+axis(1, var_loc, c("Sat"), cex.axis=0.9)
+
 #5. Define the ticks by using the pretty function
+axis(2, at=pretty(var_dataTbl$Global_active_power), cex.axis=0.9)
+
 #6. Draw the box
-plot((1:nrow(var_dataTbl)), var_dataTbl$Voltage, pch=NA_integer_,axes = FALSE,
-     ylab="Voltage", xlab="")
-lines(x=(1:nrow(var_dataTbl)), y=var_dataTbl$Voltage)
-axis(1, 1, c("Thurs"))
-axis(1, head(which(grepl("Fri", var_dataTbl$dayofweek)),1), c("Fri"))
-axis(2, at=pretty(var_dataTbl$Voltage))
 box()
 
-#Third Graph
-#1. Define the min. and max. values for y axis so that all 3 lines are plotted correctly (without getting cut off)
-#2. Plot the graph without any data points
-#3. Plot the three lines
-#3. Plot the label for the first 1440 values
-#4. Plot the label for the second 1440 values, use the grep command to find the exact location
-#5. Define the ticks by using the pretty function
-#6. Draw the box
+#################Second Graph
+#1. Plot the graph without any data points
+plot((1:nrow(var_dataTbl)), var_dataTbl$Voltage, pch=NA_integer_,axes = FALSE,
+     ylab="", xlab="")
+mtext("datetime", side=1, line=3, cex=0.9)
+mtext("Voltage", side=2, line=3, cex=0.9)
 
+#2. Plot the line
+lines(x=(1:nrow(var_dataTbl)), y=var_dataTbl$Voltage)
+
+#3. Plot the label for the first 1440 values
+axis(1, 1, c("Thurs"), cex.axis=0.9)
+
+#4. Plot the label for the second 1440 values, use the grep command to find the exact location, finish off by adding the label for saturday
+var_loc<-head(which(grepl("Fri", var_dataTbl$dayofweek)),1)
+axis(1, var_loc, c("Fri"), cex.axis=0.9)
+var_loc<-tail(which(grepl("Fri", var_dataTbl$dayofweek)),1)+1
+axis(1, var_loc, c("Sat"), cex.axis=0.9)
+
+#5. Define the ticks by using the pretty function
+axis(2, at=pretty(var_dataTbl$Voltage), cex.axis=0.9)
+
+#6. Draw the box
+box()
+
+#################Third Graph
+#1. Define the min. and max. values for y axis so that all 3 lines are plotted correctly (without getting cut off)
 minY<-min(var_dataTbl$Sub_metering_1, var_dataTbl$Sub_metering_2, var_dataTbl$Sub_metering_3)
 maxY<-max(var_dataTbl$Sub_metering_1, var_dataTbl$Sub_metering_2, var_dataTbl$Sub_metering_3)
 
+#2. Plot the graph without any data points
 plot((1:nrow(var_dataTbl)), var_dataTbl$Sub_metering_1, xlim=c(1,nrow(var_dataTbl)),
-     ylim=c(minY,maxY+10), pch=NA_integer_,axes = FALSE,ylab="Energy Sub metering", xlab="")
+     ylim=c(minY,maxY), pch=NA_integer_,axes = FALSE,ylab="", xlab="")
+mtext("Energy sub metering", side=2, line=3, cex=0.9)
 
+#3. Plot the 3 lines (using the same color coding as that of the sample course figure)
 lines(x=(1:nrow(var_dataTbl)), y=var_dataTbl$Sub_metering_1)
 lines(x=(1:nrow(var_dataTbl)), y=var_dataTbl$Sub_metering_2, col="red")
 lines(x=(1:nrow(var_dataTbl)), y=var_dataTbl$Sub_metering_3, col="blue")
-axis(1, 1, c("Thurs"))
-axis(1, head(which(grepl("Fri", var_dataTbl$dayofweek)),1), c("Fri"))
-axis(2, at=pretty(c(var_dataTbl$Sub_metering_1, var_dataTbl$Sub_metering_2, var_dataTbl$Sub_metering_3)))
+
+#4. plot the label for Thursday on the X axis for the data that correspsonds to Thursday 
+#(which is the first 1440 data points)
+axis(1, 1, c("Thu"), cex.axis=0.9)
+
+#5. plot the label for Friday on the X axis for the data that correspsonds to Friday
+#this is done via searching for friday in the day of the week column that was added above
+#and the label is added to the first tick corresponding to the Friday data
+axis(1, head(which(grepl("Fri", var_dataTbl$dayofweek)),1), c("Fri"), cex.axis=0.9)
+
+#We finish the labelling by adding saturday to the next tick after the friday data
+var_loc<-tail(which(grepl("Fri", var_dataTbl$dayofweek)),1)+1
+axis(1, var_loc, c("Sat"), cex.axis=0.9)
+
+#5. Plot the y axis by using the specs provided in the course submission sample image
+axis(2, at=c(0,10,20,30), cex.axis=0.9)
+
+#6. Draw the box
 box()
-legend("topright", pch="-", col=c("black", "red", "blue"), bty="n",
+
+#7. Plot the legend at the top right corner, using the color specs as provided in the course submission sample image
+legend("topright", pch=c(NA), col=c("black", "red", "blue"), lty=c(1), bty="n", cex=0.9, pt.cex=1,
        legend=c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"))
 
-#Fourth Graph
+
+
+#################Fourth Graph
 #1. Plot the graph without any data points
+plot((1:nrow(var_dataTbl)), var_dataTbl$Global_reactive_power, pch=NA_integer_,axes = FALSE,ylab="", xlab="")
+mtext("datetime", side=1, line=3, cex=0.9)
+mtext("Global_reactive_power", side=2, line=3, cex=0.9)
+
 #2. Plot the line
-#3. Plot the label for the first 1440 values
-#4. Plot the label for the second 1440 values, use the grep command to find the exact location
-#5. Define the ticks by using the pretty function
-#6. Draw the box
-plot((1:nrow(var_dataTbl)), var_dataTbl$Global_reactive_power, pch=NA_integer_,axes = FALSE,
-     ylab="Global_reactive_power", xlab="")
 lines(x=(1:nrow(var_dataTbl)), y=var_dataTbl$Global_reactive_power)
-axis(1, 1, c("Thurs"))
-axis(1, head(which(grepl("Fri", var_dataTbl$dayofweek)),1), c("Fri"))
-axis(2, at=pretty(var_dataTbl$Global_reactive_power))
+
+#3. Plot the label for the first 1440 values
+axis(1, 1, c("Thu"), cex.axis=0.9)
+
+#4. plot the label for Friday on the X axis for the data that correspsonds to Friday
+#this is done via searching for friday in the day of the week column that was added above
+#and the label is added to the first tick corresponding to the Friday data
+axis(1, head(which(grepl("Fri", var_dataTbl$dayofweek)),1), c("Fri"), cex.axis=0.9)
+
+#We finish the labelling by adding saturday to the next tick after the friday data
+var_loc<-tail(which(grepl("Fri", var_dataTbl$dayofweek)),1)+1
+axis(1, var_loc, c("Sat"), cex.axis=0.9)
+
+#5. Define the ticks by using the pretty function
+axis(2, at=pretty(var_dataTbl$Global_reactive_power), cex.axis=0.9)
+
+#6. Draw the box
 box()
 
 invisible(dev.off())
