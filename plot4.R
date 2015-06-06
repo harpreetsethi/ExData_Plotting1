@@ -79,7 +79,7 @@ mtext("Voltage", side=2, line=3, cex=0.9)
 lines(x=(1:nrow(var_dataTbl)), y=var_dataTbl$Voltage)
 
 #3. Plot the label for the first 1440 values
-axis(1, 1, c("Thurs"), cex.axis=0.9)
+axis(1, 1, c("Thu"), cex.axis=0.9)
 
 #4. Plot the label for the second 1440 values, use the grep command to find the exact location, finish off by adding the label for saturday
 var_loc<-head(which(grepl("Fri", var_dataTbl$dayofweek)),1)
